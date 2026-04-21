@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Tools Directory — Live Corps Ltd.</title>
+  <meta name="description" content="Complete AI Tools Directory — 150+ AI tools across 11 departments." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: #0A0A0F;
+      color: #E2E8F0;
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0A0A0F; }
+    ::-webkit-scrollbar-thumb { background: #1E6B3C; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2E9955; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px #2E9955; }
+      50% { opacity: 0.6; box-shadow: 0 0 20px #2E9955; }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #0A0A0F 0%, #0D1F15 50%, #0A0A0F 100%);
+      border-bottom: 1px solid #1E3A2F;
+      padding: 40px 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(30,107,60,0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(46,153,85,0.05) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .header-inner { max-width: 1400px; margin: 0 auto; position: relative; }
+    .header-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #2E9955; box-shadow: 0 0 12px #2E9955;
+      animation: pulse-dot 2s infinite; display: inline-block; flex-shrink: 0;
+    }
+    .header-label { color: #2E9955; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; }
+    .header-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 4vw, 46px);
+      font-weight: 700; color: #F8FAFC; line-height: 1.1; margin-bottom: 10px;
+    }
+    .header-title .green { color: #2E9955; }
+    .header-sub { color: #64748B; font-size: 13px; max-width: 560px; line-height: 1.6; }
+    .header-badges { margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .badge {
+      padding: 3px 12px; border-radius: 4px;
+      border: 1px solid #1E3A2F; color: #64748B; font-size: 10px; letter-spacing: 2px;
+    }
+    .mobile-menu-btn {
+      display: none;
+      position: absolute; top: 20px; right: 20px;
+      padding: 8px 14px; background: #0D1F15;
+      border: 1px solid #2E9955; border-radius: 6px;
+      color: #2E9955; font-size: 12px; font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      max-width: 1400px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 0; min-height: calc(100vh - 220px);
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 230px; min-width: 230px;
+      padding-top: 24px; padding-right: 18px;
+      border-right: 1px solid #141428;
+      position: sticky; top: 0;
+      max-height: calc(100vh - 60px); overflow-y: auto;
+    }
+    .sidebar-label {
+      font-size: 10px; color: #475569; letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 12px; padding-left: 8px;
+    }
+    .dept-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 8px 12px; margin-bottom: 2px;
+      background: transparent; border: 1px solid transparent;
+      border-radius: 6px; color: #94A3B8; font-size: 12px;
+      text-align: left; transition: all 0.15s;
+    }
+    .dept-btn:hover { background: #1E3A2F; color: #CBD5E1; }
+    .dept-btn.active { background: #1E6B3C; border-color: #2E9955; color: #A8D5B5; }
+    .dept-count {
+      background: #1A1A2E; color: #475569;
+      font-size: 10px; padding: 1px 7px; border-radius: 10px;
+    }
+    .dept-btn.active .dept-count { background: rgba(168,213,181,0.15); color: #A8D5B5; }
+
+    /* ── MAIN ── */
+    .main { flex: 1; padding: 24px 0 24px 24px; min-width: 0; }
+
+    /* ── SEARCH ── */
+    .search-input {
+      width: 100%; padding: 12px 16px;
+      background: #0D0D1A; border: 1px solid #1E3A2F;
+      border-radius: 8px; color: #E2E8F0; font-size: 13px;
+      font-family: 'IBM Plex Mono', monospace; transition: all 0.2s;
+      margin-bottom: 16px;
+    }
+    .search-input:focus { outline: none; border-color: #2E9955; box-shadow: 0 0 0 2px rgba(46,153,85,0.15); }
+
+    /* ── CATEGORY PILLS ── */
+    .cat-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+    .cat-pill {
+      padding: 5px 12px; border-radius: 20px;
+      border: 1px solid #1E3A2F; background: transparent;
+      color: #64748B; font-size: 11px; transition: all 0.15s;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .cat-pill:hover { background: rgba(46,153,85,0.1); color: #94A3B8; }
+    .cat-pill.active { background: #1E6B3C; color: #A8D5B5; border-color: #2E9955; }
+
+    /* ── RESULT COUNT ── */
+    .result-count { font-size: 12px; color: #475569; margin-bottom: 24px; }
+    .result-count .green { color: #2E9955; }
+    .result-count .green-soft { color: #A8D5B5; }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 36px; animation: fade-in 0.25s ease; }
+    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .section-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 600; color: #CBD5E1;
+      letter-spacing: 0.3px; white-space: nowrap;
+    }
+    .section-line { flex: 1; height: 1px; background: #141428; }
+    .section-count { color: #475569; font-size: 11px; white-space: nowrap; }
+
+    /* ── GRID ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 12px; }
+
+    /* ── CARD ── */
+    .card {
+      background: #0D0D1A; border: 1px solid #181828;
+      border-radius: 10px; padding: 16px;
+      display: flex; flex-direction: column; gap: 10px; transition: all 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); border-color: #2E9955; box-shadow: 0 0 20px rgba(46,153,85,0.12); }
+    .card-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 600; color: #F1F5F9; margin-bottom: 5px;
+    }
+    .card-cat { font-size: 10px; padding: 2px 9px; border-radius: 10px; display: inline-block; letter-spacing: 0.3px; }
+    .card-desc { font-size: 12px; color: #64748B; line-height: 1.65; flex: 1; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+    .card-tag { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: #1E3A2F; color: #4ADE80; letter-spacing: 0.2px; }
+    .visit-btn {
+      padding: 5px 12px; border-radius: 5px;
+      background: transparent; border: 1px solid #2E9955;
+      color: #2E9955; font-size: 10px; letter-spacing: 1px;
+      transition: all 0.15s; white-space: nowrap;
+      font-family: 'IBM Plex Mono', monospace; display: inline-block;
+    }
+    .visit-btn:hover { background: #2E9955; color: #fff; }
+
+    /* ── EMPTY ── */
+    .empty { text-align: center; padding: 60px 20px; color: #475569; }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid #141428; padding: 20px 24px;
+      text-align: center; color: #334155; font-size: 11px; letter-spacing: 0.5px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; padding: 0 16px; }
+      .sidebar {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 50; background: #0A0A0F; width: 100%;
+        max-height: 100vh; padding: 80px 20px 20px;
+        transform: translateX(-100%); transition: transform 0.3s ease;
+        border-right: none;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { padding: 16px 0; }
+      .mobile-menu-btn { display: block; }
+      .header-title { font-size: 26px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-meta">
+        <span class="pulse-dot"></span>
+        <span class="header-label">Live Corps Ltd. — AI Architecture</span>
+      </div>
+      <h1 class="header-title">The Complete AI Tools <span class="green">Directory</span></h1>
+      <p class="header-sub" id="toolCountSub">150+ AI tools across 11 departments — your roadmap to becoming an AI Architect</p>
+      <div class="header-badges">
+        <span class="badge">Enterprise</span>
+        <span class="badge">Startups</span>
+        <span class="badge">Open Source</span>
+        <span class="badge">Free Tier</span>
+      </div>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">☰ Departments</button>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-label">Departments</div>
+      <div id="deptList"></div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍  Search tools, categories, descriptions..." oninput="render()" />
+      <div class="cat-pills" id="catPills"></div>
+      <div class="result-count" id="resultCount"></div>
+      <div id="toolsContainer"></div>
+    </main>
+
+  </div>
+
+  <footer class="footer">
+    <p id="footerText">Built for Live Corps Ltd. · AI Architecture Reference · Dhaka, Bangladesh</p>
+  </footer>
+
+<script>
+// ─────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────
+const departments = [
+  "All Tools","IT Department","Supply Chain & Procurement","Coordination",
+  "Admin","Accounts","Sales","Marketing","Head of Product","Real Estate","Logistics","HR"
+];
+
+const categoryColors = {
+  "Code & Dev":"#3B82F6","Cybersecurity":"#EF4444","Automation":"#8B5CF6",
+  "Monitoring":"#06B6D4","AI APIs":"#6366F1","Data & Analytics":"#0EA5E9",
+  "Procurement":"#F59E0B","Supply Chain Planning":"#D97706","Risk & Compliance":"#DC2626",
+  "Productivity":"#10B981","Meetings":"#059669","Scheduling":"#34D399",
+  "General AI":"#818CF8","Research":"#A78BFA","Presentations":"#EC4899",
+  "Documents":"#14B8A6","Accounting":"#22C55E","Accounts Payable":"#16A34A",
+  "FP&A":"#4ADE80","Analytics":"#0D9488","CRM & Sales":"#F97316",
+  "Sales Intelligence":"#EA580C","Prospecting":"#FB923C","Outreach":"#F59E0B",
+  "Email":"#EAB308","Conversational":"#84CC16","Content Creation":"#F472B6",
+  "SEO":"#E879F9","Image Generation":"#C084FC","Design":"#A855F7",
+  "Video":"#9333EA","Audio":"#7C3AED","Social Media":"#DB2777",
+  "Advertising":"#BE185D","Product Management":"#0EA5E9","UX Research":"#38BDF8",
+  "Diagramming":"#7DD3FC","Property Valuation":"#84CC16","Investment":"#65A30D",
+  "Deal Management":"#4D7C0F","Leasing":"#3F6212","Lead Gen":"#A16207",
+  "Vision AI":"#92400E","Marketplace":"#78350F","Facility Management":"#B45309",
+  "Visibility":"#0891B2","Freight":"#0E7490","Route Optimization":"#155E75",
+  "Warehouse":"#1E40AF","Fleet":"#1D4ED8","HRIS":"#7C3AED","Recruiting":"#6D28D9",
+  "Talent":"#5B21B6","Employee Experience":"#4C1D95","Engagement":"#831843",
+  "Performance":"#9F1239","Learning":"#1E3A8A","Transaction":"#64748B"
+};
+
+const allTools = [
+  // IT DEPARTMENT
+  {name:"GitHub Copilot",url:"https://github.com/features/copilot",desc:"AI pair programmer that autocompletes code in real time inside your editor.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Cursor",url:"https://cursor.sh",desc:"AI-first code editor built on VS Code with GPT-4 integrated for code generation and refactoring.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Tabnine",url:"https://www.tabnine.com",desc:"AI code completion tool supporting 30+ languages, runs locally or in cloud.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Codeium",url:"https://codeium.com",desc:"Free AI coding assistant with autocomplete, chat, and search for devs.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Replit AI",url:"https://replit.com/ai",desc:"Browser-based coding platform with built-in AI for building and deploying apps.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Bolt.new",url:"https://bolt.new",desc:"AI-powered full-stack web app builder — describe your app, get working code.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"v0 by Vercel",url:"https://v0.dev",desc:"Generate React UI components from text prompts, powered by shadcn/ui.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Lovable",url:"https://lovable.dev",desc:"AI full-stack engineer that builds web apps from plain English prompts.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Sourcegraph Cody",url:"https://sourcegraph.com/cody",desc:"AI coding assistant with deep codebase context — understands your entire repo.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Phind",url:"https://www.phind.com",desc:"AI search engine built for developers — gives code-focused answers.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Warp AI",url:"https://www.warp.dev",desc:"AI-powered terminal that explains commands and debugs errors in natural language.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"CodiumAI",url:"https://www.codium.ai",desc:"AI that auto-generates meaningful tests for your code functions.",tags:["IT Department"],category:"Code & Dev"},
+  {name:"Snyk AI",url:"https://snyk.io",desc:"AI-powered security scanning for code, containers, and open source dependencies.",tags:["IT Department"],category:"Cybersecurity"},
+  {name:"Darktrace",url:"https://darktrace.com",desc:"AI cybersecurity platform that detects and autonomously responds to cyber threats.",tags:["IT Department"],category:"Cybersecurity"},
+  {name:"CrowdStrike Charlotte AI",url:"https://www.crowdstrike.com",desc:"Generative AI for cybersecurity — threat hunting, investigation, remediation.",tags:["IT Department"],category:"Cybersecurity"},
+  {name:"SentinelOne Purple AI",url:"https://www.sentinelone.com",desc:"AI-powered threat hunting and security operations analyst.",tags:["IT Department"],category:"Cybersecurity"},
+  {name:"RunZero",url:"https://runzero.com",desc:"AI-assisted network discovery and asset management for IT/security teams.",tags:["IT Department"],category:"Cybersecurity"},
+  {name:"n8n",url:"https://n8n.io",desc:"Open-source workflow automation with AI nodes — build AI agents and pipelines.",tags:["IT Department","Coordination","Admin"],category:"Automation"},
+  {name:"Make (Integromat)",url:"https://make.com",desc:"No-code automation platform with AI modules connecting hundreds of apps.",tags:["IT Department","Coordination","Admin"],category:"Automation"},
+  {name:"Zapier AI",url:"https://zapier.com/ai",desc:"Automate workflows between 6,000+ apps with AI-powered logic and chatbots.",tags:["IT Department","Coordination","Admin"],category:"Automation"},
+  {name:"Activepieces",url:"https://www.activepieces.com",desc:"Open-source Zapier alternative with AI steps and self-hosting support.",tags:["IT Department"],category:"Automation"},
+  {name:"Windmill",url:"https://windmill.dev",desc:"Open-source developer platform to build internal tools and AI workflows.",tags:["IT Department"],category:"Automation"},
+  {name:"Datadog AI",url:"https://www.datadoghq.com",desc:"AI-powered observability and monitoring for cloud infrastructure and apps.",tags:["IT Department"],category:"Monitoring"},
+  {name:"New Relic AI",url:"https://newrelic.com",desc:"Generative AI assistant for root cause analysis and incident response.",tags:["IT Department"],category:"Monitoring"},
+  {name:"Elastic AI",url:"https://www.elastic.co/ai",desc:"AI-powered search and observability for log analysis and anomaly detection.",tags:["IT Department"],category:"Monitoring"},
+  {name:"MindsDB",url:"https://mindsdb.com",desc:"AI layer for databases — query ML models directly using SQL.",tags:["IT Department"],category:"Data & Analytics"},
+  {name:"Retool AI",url:"https://retool.com/ai",desc:"Build internal AI-powered apps and dashboards connected to your databases.",tags:["IT Department","Admin"],category:"Data & Analytics"},
+  {name:"Claude API",url:"https://anthropic.com/api",desc:"Anthropic's powerful AI API for building custom AI applications and assistants.",tags:["IT Department"],category:"AI APIs"},
+  {name:"OpenAI API",url:"https://platform.openai.com",desc:"Access GPT-4, DALL·E, Whisper and more via API for custom AI solutions.",tags:["IT Department"],category:"AI APIs"},
+  {name:"Gemini API",url:"https://ai.google.dev",desc:"Google's multimodal AI API (text, image, video, audio) for developers.",tags:["IT Department"],category:"AI APIs"},
+  {name:"Hugging Face",url:"https://huggingface.co",desc:"Open-source AI model hub — 500K+ models for NLP, vision, audio, and more.",tags:["IT Department"],category:"AI APIs"},
+  {name:"Replicate",url:"https://replicate.com",desc:"Run open-source AI models in the cloud via simple API calls.",tags:["IT Department"],category:"AI APIs"},
+  {name:"LangChain",url:"https://langchain.com",desc:"Framework for building LLM-powered applications, agents, and RAG systems.",tags:["IT Department"],category:"AI APIs"},
+  {name:"Ollama",url:"https://ollama.com",desc:"Run large language models locally on your machine — Llama, Mistral, Phi.",tags:["IT Department"],category:"AI APIs"},
+  // SUPPLY CHAIN & PROCUREMENT
+  {name:"Coupa AI",url:"https://www.coupa.com",desc:"AI-powered spend management — procurement, invoicing, and supplier risk.",tags:["Supply Chain & Procurement","Accounts"],category:"Procurement"},
+  {name:"Jaggaer",url:"https://www.jaggaer.com",desc:"Autonomous procurement platform with AI for sourcing, contracts, and spend.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"Ivalua",url:"https://www.ivalua.com",desc:"Source-to-pay platform with AI for supplier management and risk assessment.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"SAP Ariba AI",url:"https://www.ariba.com",desc:"AI-enhanced procurement and supply chain collaboration platform by SAP.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"GEP SMART",url:"https://www.gep.com",desc:"Unified AI-powered procurement software for direct and indirect spend.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"Zip",url:"https://ziphq.com",desc:"AI procurement intake and orchestration — simplifies buying for employees.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"Arkestro",url:"https://arkestro.com",desc:"Predictive procurement platform using AI to accelerate sourcing cycles.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"Pactum AI",url:"https://pactum.com",desc:"AI that autonomously negotiates supplier contracts at scale.",tags:["Supply Chain & Procurement"],category:"Procurement"},
+  {name:"o9 Solutions",url:"https://o9solutions.com",desc:"AI-powered supply chain planning — demand, supply, and P&L planning.",tags:["Supply Chain & Procurement"],category:"Supply Chain Planning"},
+  {name:"Blue Yonder",url:"https://blueyonder.com",desc:"AI-driven supply chain platform for inventory, fulfilment, and workforce.",tags:["Supply Chain & Procurement","Logistics"],category:"Supply Chain Planning"},
+  {name:"Kinaxis",url:"https://kinaxis.com",desc:"Concurrent planning with AI for supply chain end-to-end visibility.",tags:["Supply Chain & Procurement"],category:"Supply Chain Planning"},
+  {name:"Llamasoft (GSCG)",url:"https://www.anylogistix.com",desc:"Supply chain network design and optimization with AI simulation.",tags:["Supply Chain & Procurement"],category:"Supply Chain Planning"},
+  {name:"Aera Technology",url:"https://aeratechnology.com",desc:"Cognitive automation for supply chain — AI decisions in real time.",tags:["Supply Chain & Procurement"],category:"Supply Chain Planning"},
+  {name:"Resilinc",url:"https://www.resilinc.com",desc:"AI-powered supply chain risk monitoring and supplier mapping.",tags:["Supply Chain & Procurement"],category:"Risk & Compliance"},
+  {name:"Riskmethods",url:"https://www.riskmethods.net",desc:"AI supply chain risk intelligence — monitors 500M+ signals globally.",tags:["Supply Chain & Procurement"],category:"Risk & Compliance"},
+  {name:"Craft.co",url:"https://craft.co",desc:"Supplier intelligence platform with AI risk scoring and monitoring.",tags:["Supply Chain & Procurement"],category:"Risk & Compliance"},
+  // COORDINATION
+  {name:"Notion AI",url:"https://notion.so/ai",desc:"AI writing, summarization, and Q&A built directly inside Notion workspaces.",tags:["Coordination","Admin","HR"],category:"Productivity"},
+  {name:"ClickUp AI",url:"https://clickup.com/ai",desc:"AI writing and task automation inside ClickUp project management.",tags:["Coordination","Admin"],category:"Productivity"},
+  {name:"Asana AI",url:"https://asana.com/ai",desc:"AI project management — auto-assign tasks, summarize projects, track goals.",tags:["Coordination","Admin"],category:"Productivity"},
+  {name:"Monday AI",url:"https://monday.com/ai",desc:"AI work management — generate formulas, summarize boards, automate tasks.",tags:["Coordination","Admin"],category:"Productivity"},
+  {name:"Slack AI",url:"https://slack.com/ai",desc:"Summarize threads, search knowledge, and get answers across Slack channels.",tags:["Coordination","Admin"],category:"Productivity"},
+  {name:"Microsoft Copilot 365",url:"https://copilot.microsoft.com",desc:"AI across Word, Excel, PowerPoint, Teams, Outlook — your AI work assistant.",tags:["Coordination","Admin","Accounts","HR"],category:"Productivity"},
+  {name:"Google Workspace AI",url:"https://workspace.google.com/ai",desc:"Gemini AI integrated in Gmail, Docs, Sheets, Slides, and Meet.",tags:["Coordination","Admin"],category:"Productivity"},
+  {name:"Fireflies.ai",url:"https://fireflies.ai",desc:"AI meeting recorder, transcriber, and summarizer for all your calls.",tags:["Coordination","HR","Sales"],category:"Meetings"},
+  {name:"Otter.ai",url:"https://otter.ai",desc:"Real-time meeting transcription and AI summaries for Zoom, Teams, Meet.",tags:["Coordination","HR"],category:"Meetings"},
+  {name:"Fathom",url:"https://fathom.video",desc:"Free AI meeting notetaker — records, transcribes, and summarizes calls.",tags:["Coordination","Sales"],category:"Meetings"},
+  {name:"Loom AI",url:"https://loom.com/ai",desc:"AI-powered async video messaging — auto titles, summaries, and chapters.",tags:["Coordination","Admin"],category:"Meetings"},
+  {name:"Reclaim AI",url:"https://reclaim.ai",desc:"AI calendar assistant that auto-schedules tasks, habits, and meetings.",tags:["Coordination","Admin"],category:"Scheduling"},
+  {name:"Motion",url:"https://usemotion.com",desc:"AI project manager that automatically schedules your tasks into your calendar.",tags:["Coordination","Admin"],category:"Scheduling"},
+  {name:"Cal.com AI",url:"https://cal.com",desc:"Open-source scheduling with AI booking links and smart availability.",tags:["Coordination"],category:"Scheduling"},
+  // ADMIN
+  {name:"ChatGPT",url:"https://chatgpt.com",desc:"OpenAI's flagship AI assistant — writing, research, analysis, coding, and more.",tags:["Admin","Coordination","HR","Marketing","Sales","Head of Product"],category:"General AI"},
+  {name:"Claude",url:"https://claude.ai",desc:"Anthropic's AI — nuanced writing, complex analysis, long documents, and coding.",tags:["Admin","Coordination","HR","Marketing","IT Department"],category:"General AI"},
+  {name:"Gemini",url:"https://gemini.google.com",desc:"Google's multimodal AI assistant integrated with Search, Gmail, and Drive.",tags:["Admin","Coordination"],category:"General AI"},
+  {name:"Copilot",url:"https://copilot.microsoft.com",desc:"Microsoft's AI powered by GPT-4 — web search, image generation, and chat.",tags:["Admin","Coordination"],category:"General AI"},
+  {name:"Perplexity AI",url:"https://perplexity.ai",desc:"AI search engine that answers questions with cited real-time web sources.",tags:["Admin","Coordination","Head of Product","Supply Chain & Procurement"],category:"Research"},
+  {name:"You.com",url:"https://you.com",desc:"AI search and assistant with coding, writing, and research modes.",tags:["Admin"],category:"Research"},
+  {name:"Gamma",url:"https://gamma.app",desc:"AI-generated presentations, documents, and websites in seconds.",tags:["Admin","Marketing","Sales","Head of Product"],category:"Presentations"},
+  {name:"Beautiful.ai",url:"https://beautiful.ai",desc:"AI presentation designer that auto-formats beautiful slides as you type.",tags:["Admin","Marketing","Sales"],category:"Presentations"},
+  {name:"Tome",url:"https://tome.app",desc:"AI-powered storytelling and presentation tool with smart slide generation.",tags:["Admin","Marketing"],category:"Presentations"},
+  {name:"SlidesAI",url:"https://slidesai.io",desc:"Generate Google Slides presentations from any text in seconds.",tags:["Admin","Marketing"],category:"Presentations"},
+  {name:"DocuSign AI",url:"https://docusign.com/ai",desc:"AI contract analysis, obligation extraction, and intelligent agreement management.",tags:["Admin","Supply Chain & Procurement"],category:"Documents"},
+  {name:"Adobe Acrobat AI",url:"https://adobe.com/acrobat/ai-assistant.html",desc:"AI assistant for summarizing, asking questions about, and editing PDFs.",tags:["Admin"],category:"Documents"},
+  {name:"Documind",url:"https://documind.chat",desc:"Chat with your PDF documents using AI — get instant answers from files.",tags:["Admin"],category:"Documents"},
+  {name:"Nanonets",url:"https://nanonets.com",desc:"AI document processing — OCR, data extraction from invoices, receipts, forms.",tags:["Admin","Accounts"],category:"Documents"},
+  {name:"Rossum",url:"https://rossum.ai",desc:"Intelligent document processing for invoices, purchase orders, and customs docs.",tags:["Admin","Accounts","Supply Chain & Procurement"],category:"Documents"},
+  // ACCOUNTS
+  {name:"QuickBooks AI",url:"https://quickbooks.intuit.com",desc:"AI-powered accounting with smart categorization, forecasting, and insights.",tags:["Accounts"],category:"Accounting"},
+  {name:"Xero AI",url:"https://xero.com",desc:"Cloud accounting with AI for bank reconciliation and financial reporting.",tags:["Accounts"],category:"Accounting"},
+  {name:"Sage Intacct AI",url:"https://sage.com/intacct",desc:"AI financial management with continuous accounting and anomaly detection.",tags:["Accounts"],category:"Accounting"},
+  {name:"Zoho Books AI",url:"https://zoho.com/books",desc:"AI-powered accounting software with smart automation for SMBs.",tags:["Accounts"],category:"Accounting"},
+  {name:"Vic.ai",url:"https://vic.ai",desc:"AI-native autonomous accounting — processes invoices and approvals with AI.",tags:["Accounts"],category:"Accounting"},
+  {name:"Botkeeper",url:"https://botkeeper.com",desc:"AI-powered bookkeeping platform for accounting firms and businesses.",tags:["Accounts"],category:"Accounting"},
+  {name:"Stampli",url:"https://stampli.com",desc:"AI accounts payable automation with Billy the Bot for invoice management.",tags:["Accounts"],category:"Accounts Payable"},
+  {name:"Tipalti AI",url:"https://tipalti.com",desc:"Global payables automation with AI for supplier payments and compliance.",tags:["Accounts"],category:"Accounts Payable"},
+  {name:"Bill.com AI",url:"https://bill.com",desc:"AI-powered accounts payable and receivable with smart payment workflows.",tags:["Accounts"],category:"Accounts Payable"},
+  {name:"Planful",url:"https://planful.com",desc:"AI financial planning and analysis — budgeting, forecasting, and consolidation.",tags:["Accounts"],category:"FP&A"},
+  {name:"Cube",url:"https://cube.dev",desc:"AI FP&A platform that brings financial planning into spreadsheets with AI.",tags:["Accounts"],category:"FP&A"},
+  {name:"Mosaic Tech",url:"https://mosaic.tech",desc:"Strategic finance platform with AI for real-time financial intelligence.",tags:["Accounts"],category:"FP&A"},
+  {name:"Domo AI",url:"https://domo.com",desc:"Business intelligence and AI analytics platform for finance dashboards.",tags:["Accounts","Head of Product"],category:"Analytics"},
+  {name:"Tableau AI",url:"https://tableau.com",desc:"Einstein AI integrated in Tableau for predictive analytics and auto-insights.",tags:["Accounts","Head of Product"],category:"Analytics"},
+  // SALES
+  {name:"Salesforce Einstein",url:"https://salesforce.com/ai",desc:"AI CRM — lead scoring, opportunity insights, and revenue forecasting.",tags:["Sales"],category:"CRM & Sales"},
+  {name:"HubSpot AI",url:"https://hubspot.com/ai",desc:"AI CRM with lead scoring, email generation, and chatbot building.",tags:["Sales","Marketing"],category:"CRM & Sales"},
+  {name:"Gong.io",url:"https://gong.io",desc:"Revenue intelligence — AI analyzes sales calls to improve deal outcomes.",tags:["Sales"],category:"Sales Intelligence"},
+  {name:"Chorus.ai",url:"https://chorus.ai",desc:"AI conversation intelligence for sales — call recording, coaching, insights.",tags:["Sales"],category:"Sales Intelligence"},
+  {name:"Clari",url:"https://clari.com",desc:"AI revenue operations — forecast accuracy, deal inspection, pipeline management.",tags:["Sales"],category:"Sales Intelligence"},
+  {name:"Apollo.io",url:"https://apollo.io",desc:"AI sales intelligence with 275M+ contacts, sequencing, and email AI.",tags:["Sales"],category:"Prospecting"},
+  {name:"Seamless.AI",url:"https://seamless.ai",desc:"AI-powered sales leads finder — real-time verified emails and phone numbers.",tags:["Sales"],category:"Prospecting"},
+  {name:"Clay",url:"https://clay.com",desc:"AI data enrichment and outreach automation for sales prospecting.",tags:["Sales","Marketing"],category:"Prospecting"},
+  {name:"Outreach AI",url:"https://outreach.io",desc:"AI sales engagement platform for sequencing, forecasting, and rep coaching.",tags:["Sales"],category:"Outreach"},
+  {name:"Salesloft AI",url:"https://salesloft.com",desc:"Revenue workflow platform with AI for deal management and forecasting.",tags:["Sales"],category:"Outreach"},
+  {name:"Lavender",url:"https://lavender.ai",desc:"AI email coach that scores and improves your sales emails in real time.",tags:["Sales"],category:"Email"},
+  {name:"Smartlead",url:"https://smartlead.ai",desc:"AI-powered cold email automation with unlimited mailboxes and AI warm-up.",tags:["Sales"],category:"Email"},
+  {name:"Reply.io AI",url:"https://reply.io",desc:"AI sales email and sequence platform with Jason AI sales assistant.",tags:["Sales"],category:"Email"},
+  {name:"Drift",url:"https://drift.com",desc:"Conversational AI for sales — chatbots that qualify and book meetings 24/7.",tags:["Sales"],category:"Conversational"},
+  {name:"Intercom Fin AI",url:"https://intercom.com/ai",desc:"AI customer service and sales agent powered by GPT-4 for instant resolution.",tags:["Sales","Admin"],category:"Conversational"},
+  // MARKETING
+  {name:"Jasper AI",url:"https://jasper.ai",desc:"AI marketing content platform — blogs, ads, emails, social with brand voice.",tags:["Marketing"],category:"Content Creation"},
+  {name:"Copy.ai",url:"https://copy.ai",desc:"AI copywriting tool for sales copy, blog posts, and social media content.",tags:["Marketing","Sales"],category:"Content Creation"},
+  {name:"Writesonic",url:"https://writesonic.com",desc:"AI writer for SEO articles, ads, landing pages, and chatbots.",tags:["Marketing"],category:"Content Creation"},
+  {name:"Rytr",url:"https://rytr.me",desc:"Affordable AI writing assistant for blog posts, emails, and social content.",tags:["Marketing","Admin"],category:"Content Creation"},
+  {name:"Anyword",url:"https://anyword.com",desc:"AI copywriting with predictive performance scores for ads and content.",tags:["Marketing"],category:"Content Creation"},
+  {name:"Surfer SEO",url:"https://surferseo.com",desc:"AI SEO platform for content optimization, keyword research, and audits.",tags:["Marketing"],category:"SEO"},
+  {name:"Semrush AI",url:"https://semrush.com",desc:"AI-powered SEO, content marketing, competitive research, and social tools.",tags:["Marketing"],category:"SEO"},
+  {name:"Ahrefs AI",url:"https://ahrefs.com",desc:"SEO toolset with AI content grader and keyword research capabilities.",tags:["Marketing"],category:"SEO"},
+  {name:"Midjourney",url:"https://midjourney.com",desc:"Industry-leading AI image generator for stunning marketing visuals and art.",tags:["Marketing"],category:"Image Generation"},
+  {name:"DALL·E 3",url:"https://openai.com/dall-e-3",desc:"OpenAI's AI image generator integrated in ChatGPT for prompt-based art.",tags:["Marketing"],category:"Image Generation"},
+  {name:"Stable Diffusion",url:"https://stability.ai",desc:"Open-source AI image generation — run locally or via API.",tags:["Marketing","IT Department"],category:"Image Generation"},
+  {name:"Adobe Firefly",url:"https://firefly.adobe.com",desc:"Adobe's generative AI for images, vectors, and design within Creative Cloud.",tags:["Marketing"],category:"Image Generation"},
+  {name:"Canva AI",url:"https://canva.com/ai",desc:"Magic Studio AI for image generation, background removal, and design.",tags:["Marketing","Admin"],category:"Design"},
+  {name:"Figma AI",url:"https://figma.com/ai",desc:"AI design tools inside Figma — prototype generation and design suggestions.",tags:["Marketing","IT Department","Head of Product"],category:"Design"},
+  {name:"Looka",url:"https://looka.com",desc:"AI logo and brand identity generator — creates logos, color palettes, fonts.",tags:["Marketing"],category:"Design"},
+  {name:"Runway ML",url:"https://runwayml.com",desc:"AI video generation and editing — text-to-video, inpainting, motion brush.",tags:["Marketing"],category:"Video"},
+  {name:"Sora",url:"https://openai.com/sora",desc:"OpenAI's text-to-video model for generating realistic HD videos from prompts.",tags:["Marketing"],category:"Video"},
+  {name:"Synthesia",url:"https://synthesia.io",desc:"AI video creator with realistic AI avatars for training and marketing videos.",tags:["Marketing","HR"],category:"Video"},
+  {name:"HeyGen",url:"https://heygen.com",desc:"AI video generation with talking avatars and video translation/dubbing.",tags:["Marketing","HR"],category:"Video"},
+  {name:"Kling AI",url:"https://klingai.com",desc:"High-quality AI video generation from text or image prompts.",tags:["Marketing"],category:"Video"},
+  {name:"ElevenLabs",url:"https://elevenlabs.io",desc:"AI voice cloning and text-to-speech with ultra-realistic voices in 29 languages.",tags:["Marketing"],category:"Audio"},
+  {name:"Suno AI",url:"https://suno.com",desc:"AI music generator — create full songs with vocals from text prompts.",tags:["Marketing"],category:"Audio"},
+  {name:"Udio",url:"https://udio.com",desc:"AI music generation platform for creating original songs and compositions.",tags:["Marketing"],category:"Audio"},
+  {name:"Podcastle",url:"https://podcastle.ai",desc:"AI audio recording and editing studio for podcasts with noise removal.",tags:["Marketing"],category:"Audio"},
+  {name:"Buffer AI",url:"https://buffer.com/ai-assistant",desc:"AI social media assistant for writing and scheduling posts across platforms.",tags:["Marketing"],category:"Social Media"},
+  {name:"Hootsuite OwlyWriter AI",url:"https://hootsuite.com",desc:"AI content writer inside Hootsuite for social media captions and posts.",tags:["Marketing"],category:"Social Media"},
+  {name:"Sprout Social AI",url:"https://sproutsocial.com",desc:"AI social media management — listening, publishing, and analytics.",tags:["Marketing"],category:"Social Media"},
+  {name:"Brandwatch AI",url:"https://brandwatch.com",desc:"AI social intelligence and brand monitoring across the web.",tags:["Marketing"],category:"Social Media"},
+  {name:"AdCreative.ai",url:"https://adcreative.ai",desc:"AI ad creative generator — produces high-converting banners and copy for ads.",tags:["Marketing"],category:"Advertising"},
+  {name:"Pencil AI",url:"https://trypencil.com",desc:"AI ad generation and performance prediction for Facebook and Google ads.",tags:["Marketing"],category:"Advertising"},
+  {name:"Smartly.io",url:"https://smartly.io",desc:"AI-powered social ad automation and creative optimization platform.",tags:["Marketing"],category:"Advertising"},
+  // HEAD OF PRODUCT
+  {name:"ProductBoard AI",url:"https://productboard.com",desc:"AI-powered product management — consolidate feedback, prioritize features.",tags:["Head of Product"],category:"Product Management"},
+  {name:"Aha! AI",url:"https://aha.io",desc:"AI product roadmap and strategy tool — prioritize ideas with AI insights.",tags:["Head of Product"],category:"Product Management"},
+  {name:"Jira AI",url:"https://atlassian.com/software/jira/ai",desc:"Atlassian Intelligence in Jira — auto-generate tickets, summaries, sprint plans.",tags:["Head of Product","IT Department"],category:"Product Management"},
+  {name:"Linear AI",url:"https://linear.app",desc:"Modern project management for software teams with AI-assisted workflows.",tags:["Head of Product","IT Department"],category:"Product Management"},
+  {name:"Maze AI",url:"https://maze.co",desc:"AI-powered user research platform — rapid prototype testing and insights.",tags:["Head of Product"],category:"UX Research"},
+  {name:"UserTesting AI",url:"https://usertesting.com",desc:"AI analyzes user feedback and sessions for UX insights and recommendations.",tags:["Head of Product"],category:"UX Research"},
+  {name:"Hotjar AI",url:"https://hotjar.com",desc:"AI heatmaps and session recordings to understand user behavior on sites.",tags:["Head of Product","Marketing"],category:"UX Research"},
+  {name:"Mixpanel AI",url:"https://mixpanel.com",desc:"Product analytics with AI — understand user journeys and conversion funnels.",tags:["Head of Product"],category:"Analytics"},
+  {name:"Amplitude AI",url:"https://amplitude.com",desc:"Digital analytics with AI for user behavior, retention, and product decisions.",tags:["Head of Product"],category:"Analytics"},
+  {name:"Whimsical AI",url:"https://whimsical.com",desc:"AI-generated mind maps, flowcharts, and wireframes from text descriptions.",tags:["Head of Product","IT Department"],category:"Diagramming"},
+  {name:"Miro AI",url:"https://miro.com/ai",desc:"AI-powered collaborative whiteboard — generate diagrams, plans, and ideas.",tags:["Head of Product","Coordination"],category:"Diagramming"},
+  {name:"Eraser.io",url:"https://eraser.io",desc:"AI diagramming for engineering teams — architecture, ERDs, flow from text.",tags:["Head of Product","IT Department"],category:"Diagramming"},
+  // REAL ESTATE
+  {name:"Zillow AI",url:"https://zillow.com",desc:"AI-powered Zestimate home valuations and smart property search.",tags:["Real Estate"],category:"Property Valuation"},
+  {name:"HouseCanary",url:"https://housecanary.com",desc:"AI property valuation and market forecasting for real estate professionals.",tags:["Real Estate"],category:"Property Valuation"},
+  {name:"Cherre",url:"https://cherre.com",desc:"Real estate data and AI analytics platform for investors and operators.",tags:["Real Estate"],category:"Data & Analytics"},
+  {name:"Skyline AI",url:"https://skyline.ai",desc:"AI investment intelligence for multifamily real estate assets.",tags:["Real Estate"],category:"Investment"},
+  {name:"Dealpath",url:"https://dealpath.com",desc:"AI-powered real estate deal management and pipeline tracking platform.",tags:["Real Estate"],category:"Deal Management"},
+  {name:"VTS AI",url:"https://vts.com",desc:"AI leasing and asset management platform for commercial real estate.",tags:["Real Estate"],category:"Leasing"},
+  {name:"Reonomy",url:"https://reonomy.com",desc:"AI commercial real estate data platform for prospecting and research.",tags:["Real Estate"],category:"Data & Analytics"},
+  {name:"Rex Homes AI",url:"https://rex.homes",desc:"AI real estate brokerage platform reducing friction in home buying/selling.",tags:["Real Estate"],category:"Transaction"},
+  {name:"Lofty AI",url:"https://lofty.ai",desc:"AI property investment platform for fractionalized real estate investing.",tags:["Real Estate"],category:"Investment"},
+  {name:"Likely.AI",url:"https://likely.ai",desc:"Predict which homeowners are likely to sell — AI lead generation for agents.",tags:["Real Estate","Sales"],category:"Prospecting"},
+  {name:"Structurely",url:"https://structurely.com",desc:"AI real estate chatbot that qualifies leads and books appointments 24/7.",tags:["Real Estate","Sales"],category:"Lead Gen"},
+  {name:"Restb.ai",url:"https://restb.ai",desc:"Computer vision AI for real estate — auto-tag property photos and features.",tags:["Real Estate"],category:"Vision AI"},
+  {name:"OfferMarket AI",url:"https://offermarket.com",desc:"AI-powered real estate marketplace for off-market property deals.",tags:["Real Estate"],category:"Marketplace"},
+  {name:"Landport AI",url:"https://buildingengines.com",desc:"AI facility and property operations management platform.",tags:["Real Estate"],category:"Facility Management"},
+  // LOGISTICS
+  {name:"FourKites",url:"https://fourkites.com",desc:"Real-time supply chain visibility with AI ETAs and predictive analytics.",tags:["Logistics"],category:"Visibility"},
+  {name:"project44",url:"https://project44.com",desc:"AI-powered supply chain visibility and logistics intelligence platform.",tags:["Logistics"],category:"Visibility"},
+  {name:"Transplace AI",url:"https://transplace.com",desc:"AI logistics management — freight optimization, tender management, analytics.",tags:["Logistics"],category:"Freight"},
+  {name:"Flexport AI",url:"https://flexport.com",desc:"Digital freight platform with AI for tracking, customs, and route optimization.",tags:["Logistics"],category:"Freight"},
+  {name:"Turvo",url:"https://turvo.com",desc:"Collaborative AI logistics platform connecting shippers, brokers, and carriers.",tags:["Logistics"],category:"Freight"},
+  {name:"Convoy AI",url:"https://convoy.com",desc:"AI-powered digital freight network with automated spot pricing.",tags:["Logistics"],category:"Freight"},
+  {name:"ORTEC",url:"https://ortec.com",desc:"AI route optimization and logistics planning software for last-mile delivery.",tags:["Logistics"],category:"Route Optimization"},
+  {name:"OptimoRoute",url:"https://optimoroute.com",desc:"AI route planning and optimization for field service and delivery teams.",tags:["Logistics"],category:"Route Optimization"},
+  {name:"Routific",url:"https://routific.com",desc:"AI delivery route optimization saving 20-40% on fuel and driver hours.",tags:["Logistics"],category:"Route Optimization"},
+  {name:"GreyOrange",url:"https://greyorange.com",desc:"AI robotics platform for warehouse automation and fulfillment optimization.",tags:["Logistics"],category:"Warehouse"},
+  {name:"6 River Systems",url:"https://6river.com",desc:"AI-powered warehouse robotics (Chuck) for picking and fulfillment.",tags:["Logistics"],category:"Warehouse"},
+  {name:"Logiwa AI",url:"https://logiwa.com",desc:"AI WMS for high-volume direct-to-consumer fulfillment operations.",tags:["Logistics"],category:"Warehouse"},
+  {name:"Locus Robotics",url:"https://locusrobotics.com",desc:"Autonomous warehouse robots with AI for order picking and fulfillment.",tags:["Logistics"],category:"Warehouse"},
+  {name:"Samsara AI",url:"https://samsara.com",desc:"AI fleet management — driver safety, fuel efficiency, ELD compliance.",tags:["Logistics"],category:"Fleet"},
+  {name:"Motive (KeepTruckin)",url:"https://gomotive.com",desc:"AI-powered fleet management with dash cams and driver coaching.",tags:["Logistics"],category:"Fleet"},
+  {name:"Nauto",url:"https://nauto.com",desc:"AI fleet safety platform using computer vision to prevent accidents.",tags:["Logistics"],category:"Fleet"},
+  // HR
+  {name:"Workday AI",url:"https://workday.com/ai",desc:"AI-powered HR — skills inference, workforce planning, and talent matching.",tags:["HR"],category:"HRIS"},
+  {name:"SAP SuccessFactors AI",url:"https://sap.com/successfactors",desc:"AI-powered HR suite for talent, payroll, and workforce analytics.",tags:["HR"],category:"HRIS"},
+  {name:"BambooHR AI",url:"https://bamboohr.com",desc:"HR platform with AI insights for small and medium businesses.",tags:["HR"],category:"HRIS"},
+  {name:"Rippling AI",url:"https://rippling.com",desc:"All-in-one HR, IT, and finance platform with AI automation and analytics.",tags:["HR","IT Department"],category:"HRIS"},
+  {name:"HiBob AI",url:"https://hibob.com",desc:"Modern HRIS with AI for people analytics, engagement, and compensation.",tags:["HR"],category:"HRIS"},
+  {name:"Greenhouse AI",url:"https://greenhouse.io",desc:"AI recruiting software for structured hiring and bias reduction.",tags:["HR"],category:"Recruiting"},
+  {name:"Lever AI",url:"https://lever.co",desc:"AI-powered ATS and CRM for talent acquisition teams.",tags:["HR"],category:"Recruiting"},
+  {name:"Beamery AI",url:"https://beamery.com",desc:"AI talent lifecycle platform — talent acquisition and workforce planning.",tags:["HR"],category:"Recruiting"},
+  {name:"Fetcher AI",url:"https://fetcher.ai",desc:"AI recruiter that automatically sources, screens, and engages top candidates.",tags:["HR"],category:"Recruiting"},
+  {name:"HireVue AI",url:"https://hirevue.com",desc:"AI video interviewing and assessments for high-volume hiring.",tags:["HR"],category:"Recruiting"},
+  {name:"Paradox (Olivia)",url:"https://paradox.ai",desc:"AI recruiting assistant Olivia automates screening, scheduling, and onboarding.",tags:["HR"],category:"Recruiting"},
+  {name:"Eightfold AI",url:"https://eightfold.ai",desc:"AI talent intelligence platform for hiring, retention, and upskilling.",tags:["HR"],category:"Talent"},
+  {name:"Phenom People AI",url:"https://phenom.com",desc:"AI talent experience platform for candidates, employees, and recruiters.",tags:["HR"],category:"Talent"},
+  {name:"Leena AI",url:"https://leena.ai",desc:"AI employee service desk for HR queries, onboarding, and policy Q&A.",tags:["HR"],category:"Employee Experience"},
+  {name:"Espressive AI",url:"https://espressive.com",desc:"AI virtual agent for employee support — answers HR, IT, and payroll questions.",tags:["HR","IT Department"],category:"Employee Experience"},
+  {name:"Culture Amp AI",url:"https://cultureamp.com",desc:"AI employee feedback and engagement platform with predictive people analytics.",tags:["HR"],category:"Engagement"},
+  {name:"Lattice AI",url:"https://lattice.com",desc:"Performance management with AI goal-setting, reviews, and engagement.",tags:["HR"],category:"Performance"},
+  {name:"15Five AI",url:"https://15five.com",desc:"AI performance management and employee engagement with OKR tracking.",tags:["HR"],category:"Performance"},
+  {name:"Docebo AI",url:"https://docebo.com",desc:"AI LMS for corporate learning — personalized training and skill development.",tags:["HR"],category:"Learning"},
+  {name:"Coursera for Business",url:"https://coursera.org/business",desc:"AI-curated upskilling with 7,000+ courses from top universities.",tags:["HR"],category:"Learning"},
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let activeDept = 'All Tools';
+let activeCategory = 'All';
+
+function getFiltered() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  return allTools.filter(t => {
+    const matchDept = activeDept === 'All Tools' || t.tags.includes(activeDept);
+    const matchSearch = !q || t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q) || t.category.toLowerCase().includes(q);
+    const matchCat = activeCategory === 'All' || t.category === activeCategory;
+    return matchDept && matchSearch && matchCat;
+  });
+}
+
+function getGrouped(filtered) {
+  const g = {};
+  filtered.forEach(t => {
+    if (!g[t.category]) g[t.category] = [];
+    g[t.category].push(t);
+  });
+  return g;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function buildSidebar() {
+  const list = document.getElementById('deptList');
+  list.innerHTML = departments.map(d => {
+    const count = d === 'All Tools' ? allTools.length : allTools.filter(t => t.tags.includes(d)).length;
+    return `<button class="dept-btn${activeDept===d?' active':''}" onclick="setDept('${escHtml(d)}')" >
+      <span>${escHtml(d)}</span>
+      <span class="dept-count">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+function buildCatPills(filtered) {
+  const cats = ['All', ...[...new Set(filtered.map(t=>t.category))].sort()];
+  document.getElementById('catPills').innerHTML = cats.map(c =>
+    `<button class="cat-pill${activeCategory===c?' active':''}" onclick="setCat('${escHtml(c)}')">${escHtml(c)}</button>`
+  ).join('');
+}
+
+function buildResultCount(filtered) {
+  let html = `Showing <span class="green">${filtered.length}</span> tools`;
+  if (activeDept !== 'All Tools') html += ` in <span class="green-soft">${escHtml(activeDept)}</span>`;
+  if (activeCategory !== 'All') html += ` › <span class="green-soft">${escHtml(activeCategory)}</span>`;
+  document.getElementById('resultCount').innerHTML = html;
+}
+
+function buildTools(filtered) {
+  const grouped = getGrouped(filtered);
+  const container = document.getElementById('toolsContainer');
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><p>No tools found for your search</p></div>`;
+    return;
+  }
+  container.innerHTML = Object.keys(grouped).sort().map(cat => {
+    const color = categoryColors[cat] || '#2E9955';
+    const cards = grouped[cat].map(tool => {
+      const shortTags = tool.tags.map(tag => tag.length > 15 ? tag.split(' ')[0] : tag);
+      return `<div class="card">
+        <div class="card-top">
+          <div>
+            <div class="card-name">${escHtml(tool.name)}</div>
+            <span class="card-cat" style="background:${color}18;color:${color};border:1px solid ${color}35">${escHtml(cat)}</span>
+          </div>
+        </div>
+        <p class="card-desc">${escHtml(tool.desc)}</p>
+        <div class="card-footer">
+          <div class="card-tags">${shortTags.map(t=>`<span class="card-tag">${escHtml(t)}</span>`).join('')}</div>
+          <a href="${escHtml(tool.url)}" target="_blank" rel="noopener noreferrer" class="visit-btn">VISIT →</a>
+        </div>
+      </div>`;
+    }).join('');
+    return `<section class="section">
+      <div class="section-header">
+        <span class="section-dot" style="background:${color};box-shadow:0 0 8px ${color}"></span>
+        <h2 class="section-title">${escHtml(cat)}</h2>
+        <div class="section-line"></div>
+        <span class="section-count">${grouped[cat].length} tools</span>
+      </div>
+      <div class="grid">${cards}</div>
+    </section>`;
+  }).join('');
+}
+
+function render() {
+  const filtered = getFiltered();
+  buildCatPills(filtered);
+  buildResultCount(filtered);
+  buildTools(filtered);
+}
+
+function setDept(dept) {
+  activeDept = dept;
+  activeCategory = 'All';
+  buildSidebar();
+  render();
+  if (window.innerWidth <= 768) toggleSidebar(false);
+}
+
+function setCat(cat) {
+  activeCategory = cat;
+  render();
+  document.getElementById('catPills').querySelectorAll('.cat-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === cat);
+  });
+}
+
+function toggleSidebar(forceClose) {
+  const sb = document.getElementById('sidebar');
+  const btn = document.getElementById('mobileMenuBtn');
+  if (forceClose === false || sb.classList.contains('open')) {
+    sb.classList.remove('open');
+    btn.textContent = '☰ Departments';
+  } else {
+    sb.classList.add('open');
+    btn.textContent = '✕ Close';
+  }
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('toolCountSub').textContent =
+    `${allTools.length} AI tools across 11 departments — your roadmap to becoming an AI Architect`;
+  document.getElementById('footerText').textContent =
+    `Built for Live Corps Ltd. · AI Architecture Reference · ${allTools.length} tools across ${departments.length-1} departments · Dhaka, Bangladesh`;
+  buildSidebar();
+  render();
+});
+</script>
+</body>
+</html>
